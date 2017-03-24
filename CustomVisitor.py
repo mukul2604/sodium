@@ -31,13 +31,19 @@ class CustomVisitor(SeawolfGrammarVisitor):
         right = int(self.visit(ctx.expr(1)))
         if ctx.op.type == SeawolfGrammarParser.MUL:
             return left * right
-        return left / right
+        try:
+            return left / right
+        except ZeroDivisionError:
+            return "Division by Zero error"
 
     def visitModulo(self, ctx):
         left = int(self.visit(ctx.expr(0)))
         right = int(self.visit(ctx.expr(1)))
         if ctx.op.type == SeawolfGrammarParser.MOD:
-            return left % right
+            try:
+                return left % right
+            except ZeroDivisionError:
+                return "Modulo by Zero error"
 
     def visitExponential(self, ctx):
         left = int(self.visit(ctx.expr(0)))
@@ -56,19 +62,37 @@ class CustomVisitor(SeawolfGrammarVisitor):
         left = int(self.visit(ctx.expr(0)))
         right = int(self.visit(ctx.expr(1)))
         if ctx.op.type == SeawolfGrammarParser.LS:
-            return left < right
+            return int(left < right)
         if ctx.op.type == SeawolfGrammarParser.GT:
-            return left > right
+            return int(left > right)
         if ctx.op.type == SeawolfGrammarParser.LE:
-            return left <= right;
+            return int(left <= right)
         if ctx.op.type == SeawolfGrammarParser.GE:
-            return left >= right;
+            return int(left >= right)
         if ctx.op.type == SeawolfGrammarParser.EQL:
-            return left == right
+            return int(left == right)
         if ctx.op.type == SeawolfGrammarParser.NE:
-            return left != right
+            return int(left != right)
         print ("invalid relational operator")
 
+    def visitLogicalNOT(self, ctx):
+        a = int(self.visit(ctx.expr(0)))
+        return not a
+
+    def visitLogical(self, ctx):
+        left = int(self.visit(ctx.expr(0)))
+        right = int(self.visit(ctx.expr(1)))
+        if ctx.op.type == SeawolfGrammarParser.AND:
+            if left and right:
+                return 1
+            else:
+                return 0
+        if ctx.op.type == SeawolfGrammarParser.OR:
+            if left or right:
+                return 1
+            else:
+                return 0
+        print("invalid logical operator")
 
     def visitParens(self, ctx):
         return self.visit(ctx.expr())
