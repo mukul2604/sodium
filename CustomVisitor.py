@@ -39,12 +39,36 @@ class CustomVisitor(SeawolfGrammarVisitor):
         if ctx.op.type == SeawolfGrammarParser.MOD:
             return left % right
 
+    def visitExponential(self, ctx):
+        left = int(self.visit(ctx.expr(0)))
+        right = int(self.visit(ctx.expr(1)))
+        if ctx.op.type == SeawolfGrammarParser.EXP:
+            return pow(left, right)
+
     def visitAddSub(self, ctx):
         left = int(self.visit(ctx.expr(0)))
         right = int(self.visit(ctx.expr(1)))
         if ctx.op.type == SeawolfGrammarParser.ADD:
             return left + right
         return left - right
+
+    def visitRelational(self, ctx):
+        left = int(self.visit(ctx.expr(0)))
+        right = int(self.visit(ctx.expr(1)))
+        if ctx.op.type == SeawolfGrammarParser.LS:
+            return left < right
+        if ctx.op.type == SeawolfGrammarParser.GT:
+            return left > right
+        if ctx.op.type == SeawolfGrammarParser.LE:
+            return left <= right;
+        if ctx.op.type == SeawolfGrammarParser.GE:
+            return left >= right;
+        if ctx.op.type == SeawolfGrammarParser.EQL:
+            return left == right
+        if ctx.op.type == SeawolfGrammarParser.NE:
+            return left != right
+        print ("invalid relational operator")
+
 
     def visitParens(self, ctx):
         return self.visit(ctx.expr())
