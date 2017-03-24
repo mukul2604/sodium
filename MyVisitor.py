@@ -42,3 +42,6 @@ class MyVisitor(LabeledExprVisitor):
 
     def visitParens(self, ctx):
         return self.visit(ctx.expr())
+    
+    def visitMylist(self, ctx):
+        return self.visit(ctx.elems())

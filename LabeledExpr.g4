@@ -1,8 +1,8 @@
 grammar LabeledExpr; 
 
-prog:   stat+ ;
+prog:   statmt+ ;
 
-stat:   expr NEWLINE                # printExpr
+statmt:   expr NEWLINE                # printExpr
     |   ID '=' expr NEWLINE         # assign
     |   NEWLINE                     # blank
     ;
@@ -12,7 +12,17 @@ expr:   expr op=('*'|'/') expr      # MulDiv
     |   INT                         # int
     |   ID                          # id
     |   '(' expr ')'                # parens
+    |   mylist                      # myList
     ;
+
+mylist
+  : STARTL elems? ENDL              
+  ;
+elems
+  : elem (SEP elem)*
+  ;
+
+elem: INT;
 
 MUL :   '*' ; // assigns token name to '*' used above in grammar
 DIV :   '/' ;
@@ -21,4 +31,8 @@ SUB :   '-' ;
 ID  :   [a-zA-Z]+ ;      // match identifiers
 INT :   [0-9]+ ;         // match integers
 NEWLINE:'\r'? '\n' ;     // return newlines to parser (is end-statement signal)
+// List symbols
+STARTL : '[';
+ENDL : ']';
+SEP : ',';
 WS  :   [ \t]+ -> skip ; // toss out whitespace
