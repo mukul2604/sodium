@@ -76,8 +76,8 @@ class CustomVisitor(SeawolfGrammarVisitor):
         print ("invalid relational operator")
 
     def visitLogicalNOT(self, ctx):
-        a = int(self.visit(ctx.expr(0)))
-        return not a
+        a = self.visit(ctx.expr())
+        return int(not int(a))
 
     def visitLogical(self, ctx):
         left = int(self.visit(ctx.expr(0)))
