@@ -1,8 +1,8 @@
-from LabeledExprVisitor import LabeledExprVisitor
-from LabeledExprParser import LabeledExprParser
+from SeawolfGrammarVisitor import SeawolfGrammarVisitor
+from SeawolfGrammarParser import SeawolfGrammarParser
 
 
-class MyVisitor(LabeledExprVisitor):
+class CustomVisitor(SeawolfGrammarVisitor):
     def __init__(self):
         self.memory = {}
 
@@ -29,14 +29,20 @@ class MyVisitor(LabeledExprVisitor):
     def visitMulDiv(self, ctx):
         left = int(self.visit(ctx.expr(0)))
         right = int(self.visit(ctx.expr(1)))
-        if ctx.op.type == LabeledExprParser.MUL:
+        if ctx.op.type == SeawolfGrammarParser.MUL:
             return left * right
         return left / right
+
+    def visitModulo(self, ctx):
+        left = int(self.visit(ctx.expr(0)))
+        right = int(self.visit(ctx.expr(1)))
+        if ctx.op.type == SeawolfGrammarParser.MOD:
+            return left % right
 
     def visitAddSub(self, ctx):
         left = int(self.visit(ctx.expr(0)))
         right = int(self.visit(ctx.expr(1)))
-        if ctx.op.type == LabeledExprParser.ADD:
+        if ctx.op.type == SeawolfGrammarParser.ADD:
             return left + right
         return left - right
 

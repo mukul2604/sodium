@@ -1,20 +1,20 @@
 import sys
 from antlr4 import *
 from antlr4.InputStream import InputStream
-from LabeledExprLexer import LabeledExprLexer
-from LabeledExprParser import LabeledExprParser
-from MyVisitor import MyVisitor
+from SeawolfGrammarLexer import SeawolfGrammarLexer
+from SeawolfGrammarParser import SeawolfGrammarParser
+from CustomVisitor import CustomVisitor
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
-        input_stream = FileStream(sys.argv[1])
+        input_stream = FileStream(sys.argv[1].strip())
     else:
         input_stream = InputStream(sys.stdin.readline())
 
-    lexer = LabeledExprLexer(input_stream)
+    lexer = SeawolfGrammarLexer(input_stream)
     token_stream = CommonTokenStream(lexer)
-    parser = LabeledExprParser(token_stream)
+    parser = SeawolfGrammarParser(token_stream)
     tree = parser.prog()
 
-    visitor = MyVisitor()
+    visitor = CustomVisitor()
     visitor.visit(tree)
