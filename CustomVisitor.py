@@ -17,8 +17,11 @@ class CustomVisitor(SeawolfGrammarVisitor):
         print(value)
         return 0
 
+    def visitReal(self, ctx):
+        return float(ctx.REAL().getText())
+
     def visitInt(self, ctx):
-        return ctx.INT().getText()
+        return int(ctx.INT().getText())
 
     def visitId(self, ctx):
         name = ctx.ID().getText()
@@ -27,18 +30,23 @@ class CustomVisitor(SeawolfGrammarVisitor):
         return 0
 
     def visitMulDiv(self, ctx):
-        left = int(self.visit(ctx.expr(0)))
-        right = int(self.visit(ctx.expr(1)))
+        left = self.visit(ctx.expr(0))
+        right = self.visit(ctx.expr(1))
+
         if ctx.op.type == SeawolfGrammarParser.MUL:
             return left * right
         try:
-            return left / right
+            if type(left) == int and type(right) == int:
+                return int(left / right)
+            else:
+                return left / right
         except ZeroDivisionError:
             return "Division by Zero error"
 
     def visitModulo(self, ctx):
-        left = int(self.visit(ctx.expr(0)))
-        right = int(self.visit(ctx.expr(1)))
+        left = self.visit(ctx.expr(0))
+        right = self.visit(ctx.expr(1))
+
         if ctx.op.type == SeawolfGrammarParser.MOD:
             try:
                 return left % right
@@ -46,14 +54,20 @@ class CustomVisitor(SeawolfGrammarVisitor):
                 return "Modulo by Zero error"
 
     def visitExponential(self, ctx):
-        left = int(self.visit(ctx.expr(0)))
-        right = int(self.visit(ctx.expr(1)))
+        left = self.visit(ctx.expr(0))
+        right = self.visit(ctx.expr(1))
         if ctx.op.type == SeawolfGrammarParser.EXP:
             return pow(left, right)
 
+    def visitFloorDiv(self, ctx):
+        left = self.visit(ctx.expr(0))
+        right = self.visit(ctx.expr(1))
+        if ctx.op.type == SeawolfGrammarParser.FLRDIV:
+            return int(left // right)
+
     def visitAddSub(self, ctx):
-        left = int(self.visit(ctx.expr(0)))
-        right = int(self.visit(ctx.expr(1)))
+        left = self.visit(ctx.expr(0))
+        right = self.visit(ctx.expr(1))
         if ctx.op.type == SeawolfGrammarParser.ADD:
             return left + right
         return left - right

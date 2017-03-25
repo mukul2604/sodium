@@ -9,7 +9,7 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         input_stream = FileStream(sys.argv[1].strip())
     else:
-        input_stream = InputStream(sys.stdin.readline())
+        input_stream = InputStream(sys.stdin.readline().strip())
 
     lexer = SeawolfGrammarLexer(input_stream)
     token_stream = CommonTokenStream(lexer)
