@@ -9,7 +9,7 @@ statmt:   expr NEWLINE              # printExpr
 
 expr:   expr op = EXP expr                             # Exponential
     |   expr op = (MUL | DIV) expr                     # MulDiv
-    |   expr op = FLRDIV expr                           # FloorDiv
+    |   expr op = FLRDIV expr                          # FloorDiv
     |   expr op = MOD expr                             # Modulo
     |   expr op = EXP expr                             # Exponential
     |   expr op = (ADD | SUB) expr                     # AddSub
