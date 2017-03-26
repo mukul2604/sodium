@@ -29,6 +29,9 @@ class CustomVisitor(SeawolfGrammarVisitor):
     def visitNegint(self, ctx):
         return -int(ctx.INT().getText())
 
+    def visitString(self, ctx):
+        return str(ctx.STRING().getText()).strip('\'').strip('\"')
+
     def visitId(self, ctx):
         name = ctx.ID().getText()
         if name in self.memory:
@@ -74,9 +77,12 @@ class CustomVisitor(SeawolfGrammarVisitor):
     def visitAddSub(self, ctx):
         left = self.visit(ctx.expr(0))
         right = self.visit(ctx.expr(1))
-        if ctx.op.type == SeawolfGrammarParser.ADD:
-            return left + right
-        return left - right
+        try:
+            if ctx.op.type == SeawolfGrammarParser.ADD:
+                return left + right
+            return left - right
+        except Exception:
+            return "SEMANTIC ERROR"
 
     def visitRelational(self, ctx):
         left = int(self.visit(ctx.expr(0)))

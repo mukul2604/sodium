@@ -4,6 +4,7 @@ from antlr4.InputStream import InputStream
 from SeawolfGrammarLexer import SeawolfGrammarLexer
 from SeawolfGrammarParser import SeawolfGrammarParser
 from CustomVisitor import CustomVisitor
+#from CustomAST import CustomAST
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
@@ -15,6 +16,6 @@ if __name__ == '__main__':
     token_stream = CommonTokenStream(lexer)
     parser = SeawolfGrammarParser(token_stream)
     tree = parser.prog()
-
+   # tree = CustomAST(tree)
     visitor = CustomVisitor()
     visitor.visit(tree)

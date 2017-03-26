@@ -20,6 +20,7 @@ expr:   expr op = EXP expr                             # Exponential
     |   REAL                                           # real
     |   '(' SUB INT ')'          # negint
     |   '(' SUB REAL ')'         # negreal
+    |   STRING                   # string
     |   ID                       # id
     |   '(' expr ')'             # parens
     ;
@@ -50,5 +51,6 @@ OR  : 'or' ;
 ID  :   [a-zA-Z]+ ;      // match identifiers
 INT :   [0-9]+ ;         // match integers
 REAL:   INT ( '.' (INT)? )?  ; // real numbers
+STRING: '\'' [a-zA-Z0-9\t]* '\''  | '\"' [a-zA-Z0-9\t]* '\"' ;
 NEWLINE:'\r'? '\n' ;     // return newlines to parser (is end-statement signal)
 WS  :   [ \t]+ -> skip ; // toss out whitespace
