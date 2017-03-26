@@ -16,10 +16,12 @@ expr:   expr op = EXP expr                             # Exponential
     |   expr op = (LS | GT | LE | GE | EQL | NE) expr  # Relational
     |   NOT expr                                       # LogicalNOT
     |   expr op = (AND | OR) expr                      # Logical
-    |   INT                         # int
-    |   REAL                        # real
-    |   ID                          # id
-    |   '(' expr ')'                # parens
+    |   INT                                            # int
+    |   REAL                                           # real
+    |   '(' SUB INT ')'          # negint
+    |   '(' SUB REAL ')'         # negreal
+    |   ID                       # id
+    |   '(' expr ')'             # parens
     ;
 
 

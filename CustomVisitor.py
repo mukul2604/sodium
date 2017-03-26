@@ -20,8 +20,14 @@ class CustomVisitor(SeawolfGrammarVisitor):
     def visitReal(self, ctx):
         return float(ctx.REAL().getText())
 
+    def visitNegreal(self, ctx):
+        return -float(ctx.REAL().getText())
+
     def visitInt(self, ctx):
         return int(ctx.INT().getText())
+
+    def visitNegint(self, ctx):
+        return -int(ctx.INT().getText())
 
     def visitId(self, ctx):
         name = ctx.ID().getText()
