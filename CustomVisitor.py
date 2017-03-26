@@ -63,7 +63,7 @@ class CustomVisitor(SeawolfGrammarVisitor):
         left = self.visit(ctx.expr(0))
         right = self.visit(ctx.expr(1))
         if ctx.op.type == SeawolfGrammarParser.FLRDIV:
-            return int(left // right)
+            return left // right
 
     def visitAddSub(self, ctx):
         left = self.visit(ctx.expr(0))
