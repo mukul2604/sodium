@@ -7,13 +7,12 @@ statmt:   expr NEWLINE              # printExpr
     |   NEWLINE                     # blank
     ;
 
-expr:   SUB INT                                  # negint
-    |   SUB REAL                                 # negreal
-    |   expr op = EXP expr                             # Exponential
+expr:   SUB INT                                        # negint
+    |   SUB REAL                                       # negreal
     |   expr op = (MUL | DIV) expr                     # MulDiv
-    |   expr op = FLRDIV expr                          # FloorDiv
     |   expr op = MOD expr                             # Modulo
-    |   expr op = EXP expr                             # Exponential
+    |   <assoc=right> expr op = EXP expr               # Exponential
+    |   expr op = FLRDIV expr                          # FloorDiv
     |   expr op = (ADD | SUB) expr                     # AddSub
     |   expr op = (LS | GT | LE | GE | EQL | NE) expr  # Relational
     |   NOT expr                                       # LogicalNOT

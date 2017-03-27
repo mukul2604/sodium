@@ -1,0 +1,10 @@
+python version: python3
+ANTLR version :  ANTLRv4
+Main file: seawolf.py
+Grammar: SeawolfGrammar.g4
+Other file:
+CustomVisitor.py  : overrides default visitor
+Rest are auto generated(Lexer,Parser,.tokens, Visitor etc)
+
+//How to run
+python3 seawolf.py  input_file
