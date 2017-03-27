@@ -50,7 +50,7 @@ class CustomVisitor(SeawolfGrammarVisitor):
             else:
                 return left / right
         except ZeroDivisionError:
-                return "Division by Zero error"
+                return "Division by Zero Error"
         except Exception:
             return "SEMANTIC ERROR"
 
@@ -62,7 +62,7 @@ class CustomVisitor(SeawolfGrammarVisitor):
             if ctx.op.type == SeawolfGrammarParser.MOD:
                 return left % right
         except ZeroDivisionError:
-            return "Modulo by Zero error"
+            return "Modulo by Zero Error"
         except Exception:
             return "SEMANTIC ERROR"
 
@@ -83,7 +83,7 @@ class CustomVisitor(SeawolfGrammarVisitor):
             if ctx.op.type == SeawolfGrammarParser.FLRDIV:
                 return left // right
         except ZeroDivisionError:
-            return "Floor Division by Zero error"
+            return "Floor Division by Zero Error"
         except Exception:
             return "SEMANTIC ERROR"
 
