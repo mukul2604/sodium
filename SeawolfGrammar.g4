@@ -7,7 +7,9 @@ statmt:   expr NEWLINE              # printExpr
     |   NEWLINE                     # blank
     ;
 
-expr:   expr op = EXP expr                             # Exponential
+expr:   SUB INT                                  # negint
+    |   SUB REAL                                 # negreal
+    |   expr op = EXP expr                             # Exponential
     |   expr op = (MUL | DIV) expr                     # MulDiv
     |   expr op = FLRDIV expr                          # FloorDiv
     |   expr op = MOD expr                             # Modulo
@@ -18,8 +20,6 @@ expr:   expr op = EXP expr                             # Exponential
     |   expr op = (AND | OR) expr                      # Logical
     |   INT                                            # int
     |   REAL                                           # real
-    |   '(' SUB INT ')'          # negint
-    |   '(' SUB REAL ')'         # negreal
     |   STRING                   # string
     |   ID                       # id
     |   '(' expr ')'             # parens
