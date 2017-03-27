@@ -42,3 +42,16 @@ abc=100
 cde=20.0
 abc/cde
 "Hello"+"SeaWolf"
+"Hello" + 2
+"Hello" / "Seawolf"
+42 + "Red"
+"RED" + "GREEN"
+(-2) * 5
+2//0
+2%0
+2*0
+"Hello" / 0
+2/0
+not 2.0
+'e' and  'd'
+1 -(2+3)

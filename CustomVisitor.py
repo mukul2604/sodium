@@ -41,38 +41,51 @@ class CustomVisitor(SeawolfGrammarVisitor):
     def visitMulDiv(self, ctx):
         left = self.visit(ctx.expr(0))
         right = self.visit(ctx.expr(1))
-
-        if ctx.op.type == SeawolfGrammarParser.MUL:
-            return left * right
         try:
+            if ctx.op.type == SeawolfGrammarParser.MUL:
+                return left * right
+
             if type(left) == int and type(right) == int:
                 return int(left / right)
             else:
                 return left / right
         except ZeroDivisionError:
-            return "Division by Zero error"
+                return "Division by Zero error"
+        except Exception:
+            return "SEMANTIC ERROR"
 
     def visitModulo(self, ctx):
         left = self.visit(ctx.expr(0))
         right = self.visit(ctx.expr(1))
 
-        if ctx.op.type == SeawolfGrammarParser.MOD:
-            try:
+        try:
+            if ctx.op.type == SeawolfGrammarParser.MOD:
                 return left % right
-            except ZeroDivisionError:
-                return "Modulo by Zero error"
+        except ZeroDivisionError:
+            return "Modulo by Zero error"
+        except Exception:
+            return "SEMANTIC ERROR"
 
     def visitExponential(self, ctx):
         left = self.visit(ctx.expr(0))
         right = self.visit(ctx.expr(1))
-        if ctx.op.type == SeawolfGrammarParser.EXP:
-            return pow(left, right)
+        try:
+            if ctx.op.type == SeawolfGrammarParser.EXP:
+                return pow(left, right)
+        except Exception:
+            return "SEMANTIC ERROR"
 
     def visitFloorDiv(self, ctx):
         left = self.visit(ctx.expr(0))
         right = self.visit(ctx.expr(1))
-        if ctx.op.type == SeawolfGrammarParser.FLRDIV:
-            return left // right
+
+        try:
+            if ctx.op.type == SeawolfGrammarParser.FLRDIV:
+                return left // right
+        except ZeroDivisionError:
+            return "Floor Division by Zero error"
+        except Exception:
+            return "SEMANTIC ERROR"
 
     def visitAddSub(self, ctx):
         left = self.visit(ctx.expr(0))
@@ -85,40 +98,58 @@ class CustomVisitor(SeawolfGrammarVisitor):
             return "SEMANTIC ERROR"
 
     def visitRelational(self, ctx):
-        left = int(self.visit(ctx.expr(0)))
-        right = int(self.visit(ctx.expr(1)))
-        if ctx.op.type == SeawolfGrammarParser.LS:
-            return int(left < right)
-        if ctx.op.type == SeawolfGrammarParser.GT:
-            return int(left > right)
-        if ctx.op.type == SeawolfGrammarParser.LE:
-            return int(left <= right)
-        if ctx.op.type == SeawolfGrammarParser.GE:
-            return int(left >= right)
-        if ctx.op.type == SeawolfGrammarParser.EQL:
-            return int(left == right)
-        if ctx.op.type == SeawolfGrammarParser.NE:
-            return int(left != right)
-        print ("invalid relational operator")
+        left = self.visit(ctx.expr(0))
+        right = self.visit(ctx.expr(1))
+
+        try:
+            if type(left) != int or type(right) != int:
+                # relation is only for integers here
+                raise Exception
+            if ctx.op.type == SeawolfGrammarParser.LS:
+                return left < right
+            if ctx.op.type == SeawolfGrammarParser.GT:
+                return left > right
+            if ctx.op.type == SeawolfGrammarParser.LE:
+                return left <= right
+            if ctx.op.type == SeawolfGrammarParser.GE:
+                return left >= right
+            if ctx.op.type == SeawolfGrammarParser.EQL:
+                return left == right
+            if ctx.op.type == SeawolfGrammarParser.NE:
+                return left != right
+            print ("invalid relational operator")
+        except Exception:
+            return "SEMANTIC ERROR"
 
     def visitLogicalNOT(self, ctx):
         a = self.visit(ctx.expr())
-        return int(not int(a))
+        try:
+            if type(a) != int:
+                raise Exception
+            return int(not a)
+        except Exception:
+            return "SEMANTIC ERROR"
 
     def visitLogical(self, ctx):
-        left = int(self.visit(ctx.expr(0)))
-        right = int(self.visit(ctx.expr(1)))
-        if ctx.op.type == SeawolfGrammarParser.AND:
-            if left and right:
-                return 1
-            else:
-                return 0
-        if ctx.op.type == SeawolfGrammarParser.OR:
-            if left or right:
-                return 1
-            else:
-                return 0
-        print("invalid logical operator")
+        left = self.visit(ctx.expr(0))
+        right = self.visit(ctx.expr(1))
+        try:
+            if type(left) != int or type(right) != int:
+                # logical is only for integers here
+                raise Exception
+            if ctx.op.type == SeawolfGrammarParser.AND:
+                if left and right:
+                    return 1
+                else:
+                    return 0
+            if ctx.op.type == SeawolfGrammarParser.OR:
+                if left or right:
+                    return 1
+                else:
+                    return 0
+            print("invalid logical operator")
+        except Exception:
+            return "SEMANTIC ERROR"
 
     def visitParens(self, ctx):
         return self.visit(ctx.expr())
