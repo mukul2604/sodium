@@ -51,6 +51,6 @@ OR  : 'or' ;
 ID  :   [a-zA-Z]+ ;      // match identifiers
 INT :   [0-9]+ ;         // match integers
 REAL:   INT ( '.' (INT)? )?  ; // real numbers
-STRING: '\'' [a-zA-Z0-9\t]* '\''  | '\"' [a-zA-Z0-9\t]* '\"' ;
+STRING: '\'' [ a-zA-Z0-9\t]* '\''  | '\"' [ a-zA-Z0-9\t]* '\"' ;
 NEWLINE:'\r'? '\n' ;     // return newlines to parser (is end-statement signal)
 WS  :   [ \t]+ -> skip ; // toss out whitespace
