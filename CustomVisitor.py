@@ -154,5 +154,6 @@ class CustomVisitor(SeawolfGrammarVisitor):
     def visitParens(self, ctx):
         return self.visit(ctx.expr())
     
-    def visitMylist(self, ctx):
-        return self.visit(ctx.elems())
+    def visitList(self, ctx):
+        value = self.visit(ctx.listexpr())
+        return value

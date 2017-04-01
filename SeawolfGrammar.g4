@@ -19,10 +19,13 @@ expr:   SUB INT                                        # negint
     |   expr op = (AND | OR) expr                      # Logical
     |   INT                                            # int
     |   REAL                                           # real
-    |   STRING                   # string
-    |   ID                       # id
-    |   '(' expr ')'             # parens
+    |   STRING                                         # string
+    |   ID                                             # id
+    |   '(' expr ')'                                   # parens
+    |   listexpr                                       # list
     ;
+
+listexpr: '[' LIST ']';
 
 
 MUL :   '*' ; // assigns token name to '*' used above in grammar
@@ -51,5 +54,7 @@ ID  :   [a-zA-Z]+ ;      // match identifiers
 INT :   [0-9]+ ;         // match integers
 REAL:   INT ( '.' (INT)? )?  ; // real numbers
 STRING: '\'' [ a-zA-Z0-9\t]* '\''  | '\"' [ a-zA-Z0-9\t]* '\"' ;
+LISTELEM : (STRING | REAL | STRING);
+LIST:  LISTELEM (',' LISTELEM)* ;
 NEWLINE:'\r'? '\n' ;     // return newlines to parser (is end-statement signal)
 WS  :   [ \t]+ -> skip ; // toss out whitespace

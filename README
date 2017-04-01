@@ -1,4 +1,4 @@
-python version: python3
+python version: python 3.6.1
 ANTLR version :  ANTLRv4
 Main file: seawolf.py
 Grammar: SeawolfGrammar.g4
