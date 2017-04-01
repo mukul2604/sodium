@@ -27,7 +27,9 @@ expr:   SUB INT                                        # negint
     |   listexpr                                       # List
     ;
 
-listexpr: '[' LIST ']';
+listexpr: '[' list_ ']';
+list_:  listelem (COMMA listelem)* ;
+listelem : (STRING | REAL | INT);
 
 
 MUL :   '*' ; // assigns token name to '*' used above in grammar
@@ -37,6 +39,7 @@ EXP :   '**' ;
 FLRDIV:  '//' ;
 ADD :   '+' ;
 SUB :   '-' ;
+COMMA : ',';
 
 // Relational Operators
 LS  :   '<' ;
@@ -61,7 +64,5 @@ fragment STRING_ESCAPE_SEQ
  : '\\' .
  ;
 STRING: '"' ( STRING_ESCAPE_SEQ | ~[\\\r\n"] )* '"';
-LISTELEM : (STRING | REAL | STRING);
-LIST:  LISTELEM (',' LISTELEM)* ;
 NEWLINE:'\r'? '\n' ;     // return newlines to parser (is end-statement signal)
 WS  :   [ \t]+ -> skip ; // toss out whitespace

@@ -155,7 +155,7 @@ class CustomVisitor(SeawolfGrammarVisitor):
         return self.visit(ctx.expr())
     
     def visitList(self, ctx):
-        value = self.visit(ctx.listexpr(0))
+        value = self.visit(ctx.listexpr())
         return value
 
     def visitStringindexing(self, ctx):

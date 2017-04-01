@@ -76,3 +76,6 @@ a[3]
 3 in "hello"
 "hello" in 3
 "d\""
+"dsd"
+[ 1,2,3 ]
+
