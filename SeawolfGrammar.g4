@@ -57,7 +57,10 @@ IN : 'in';
 ID  :   [a-zA-Z]+ ;      // match identifiers
 INT :   [0-9]+ ;         // match integers
 REAL:   INT ( '.' (INT)? )?  ; // real numbers
-STRING: '\"' [ a-zA-Z0-9\t,.]* '\"' ;
+fragment STRING_ESCAPE_SEQ
+ : '\\' .
+ ;
+STRING: '"' ( STRING_ESCAPE_SEQ | ~[\\\r\n"] )* '"';
 LISTELEM : (STRING | REAL | STRING);
 LIST:  LISTELEM (',' LISTELEM)* ;
 NEWLINE:'\r'? '\n' ;     // return newlines to parser (is end-statement signal)

@@ -75,3 +75,4 @@ a[3]
 "Hi" in "Hello"
 3 in "hello"
 "hello" in 3
+"d\""
