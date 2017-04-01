@@ -155,5 +155,27 @@ class CustomVisitor(SeawolfGrammarVisitor):
         return self.visit(ctx.expr())
     
     def visitList(self, ctx):
-        value = self.visit(ctx.listexpr())
+        value = self.visit(ctx.listexpr(0))
         return value
+
+    def visitStringindexing(self, ctx):
+        value = self.visit(ctx.expr(0))
+        index = self.visit(ctx.expr(1))
+        try:
+            # if type(value) != str and type(index) != int:
+            #     raise Exception
+            return value[index]
+        except Exception:
+            return "SEMANTIC ERROR"
+
+    def visitInoperationstring(self, ctx):
+        value1 = self.visit(ctx.expr(0))
+        value2 = self.visit(ctx.expr(1))
+        try:
+            if value1 in value2:
+                return 1
+            else:
+                return 0
+        except Exception:
+            return "SEMANTIC ERROR"
+

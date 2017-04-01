@@ -14,6 +14,7 @@ expr:   SUB INT                                        # negint
     |   <assoc=right> expr op = EXP expr               # Exponential
     |   expr op = FLRDIV expr                          # FloorDiv
     |   expr op = (ADD | SUB) expr                     # AddSub
+    |   expr op = IN expr                              # Inoperationstring
     |   expr op = (LS | GT | LE | GE | EQL | NE) expr  # Relational
     |   NOT expr                                       # LogicalNOT
     |   expr op = (AND | OR) expr                      # Logical
@@ -22,7 +23,8 @@ expr:   SUB INT                                        # negint
     |   STRING                                         # string
     |   ID                                             # id
     |   '(' expr ')'                                   # parens
-    |   listexpr                                       # list
+    |   expr '[' expr ']'                              # Stringindexing
+    |   listexpr                                       # List
     ;
 
 listexpr: '[' LIST ']';
@@ -48,12 +50,14 @@ NE  :   '<>' ;
 NOT : 'not' ;
 AND : 'and' ;
 OR  : 'or' ;
+
+IN : 'in';
 // Operands
 
 ID  :   [a-zA-Z]+ ;      // match identifiers
 INT :   [0-9]+ ;         // match integers
 REAL:   INT ( '.' (INT)? )?  ; // real numbers
-STRING: '\'' [ a-zA-Z0-9\t]* '\''  | '\"' [ a-zA-Z0-9\t]* '\"' ;
+STRING: '\"' [ a-zA-Z0-9\t,.]* '\"' ;
 LISTELEM : (STRING | REAL | STRING);
 LIST:  LISTELEM (',' LISTELEM)* ;
 NEWLINE:'\r'? '\n' ;     // return newlines to parser (is end-statement signal)

@@ -53,7 +53,6 @@ abc/cde
 "Hello" / 0
 2/0
 not 2.0
-'e' and  'd'
 1 -(2+3)
 8//3
 a=12
@@ -69,4 +68,10 @@ a+b
 -2-2
 0-(-2)
 1 + 2
-[1,2,4]
+"Logan" + " Hi"
+a = "logan"
+a[3]
+"Hello, " + a + "."
+"Hi" in "Hello"
+3 in "hello"
+"hello" in 3
