@@ -24,12 +24,12 @@ expr:   SUB INT                                        # negint
     |   ID                                             # id
     |   '(' expr ')'                                   # parens
     |   expr '[' expr ']'                              # Stringindexing
-    |   listexpr                                       # List
+    |  '[' expr_list ']'                                        # list
     ;
 
-listexpr: '[' list_ ']';
-list_:  listelem (COMMA listelem)* ;
-listelem : (STRING | REAL | INT);
+expr_list :  expr ',' expr_list
+          |  expr
+          ;
 
 
 MUL :   '*' ; // assigns token name to '*' used above in grammar

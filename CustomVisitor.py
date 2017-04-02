@@ -153,10 +153,16 @@ class CustomVisitor(SeawolfGrammarVisitor):
 
     def visitParens(self, ctx):
         return self.visit(ctx.expr())
-    
-    def visitList(self, ctx):
-        value = self.visit(ctx.listexpr())
-        return value
+
+    def visitList(self, ctx: SeawolfGrammarParser.ListContext):
+        ret_list = []
+        list_start = ctx.expr_list()
+        ret_list.append(self.visit(list_start.expr()))
+        tail = list_start.expr_list()
+        while not tail == None:
+            ret_list.append(self.visit(tail.expr()))
+            tail = tail.expr_list()
+        return ret_list
 
     def visitStringindexing(self, ctx):
         value = self.visit(ctx.expr(0))
