@@ -29,9 +29,9 @@ expr:   SUB INT                                        # negint
 
 listexpr: '[' list_ ']';
 list_ :  expr ',' list_
-          |  expr
+          |  expr | empty_list
           ;
-
+empty_list: '[' WS ']';
 
 MUL :   '*' ; // assigns token name to '*' used above in grammar
 DIV :   '/' ;

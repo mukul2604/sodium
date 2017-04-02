@@ -176,6 +176,8 @@ class CustomVisitor(SeawolfGrammarVisitor):
     def visitList(self, ctx):
         list_visited = []
         start = ctx.listexpr().list_()
+        if start.expr() is None:
+            return "[]"
         list_visited.append(self.visit(start.expr()))
         tail = start.list_()
         while tail is not None:
