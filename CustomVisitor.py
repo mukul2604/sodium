@@ -154,27 +154,15 @@ class CustomVisitor(SeawolfGrammarVisitor):
     def visitParens(self, ctx):
         return self.visit(ctx.expr())
 
-    def visitList(self, ctx: SeawolfGrammarParser.ListContext):
-        ret_list = []
-        list_start = ctx.expr_list()
-        ret_list.append(self.visit(list_start.expr()))
-        tail = list_start.expr_list()
-        while not tail == None:
-            ret_list.append(self.visit(tail.expr()))
-            tail = tail.expr_list()
-        return ret_list
-
-    def visitStringindexing(self, ctx):
+    def visitIndexing(self, ctx):
         value = self.visit(ctx.expr(0))
         index = self.visit(ctx.expr(1))
         try:
-            # if type(value) != str and type(index) != int:
-            #     raise Exception
             return value[index]
         except Exception:
             return "SEMANTIC ERROR"
 
-    def visitInoperationstring(self, ctx):
+    def visitInoperation(self, ctx):
         value1 = self.visit(ctx.expr(0))
         value2 = self.visit(ctx.expr(1))
         try:
@@ -185,3 +173,12 @@ class CustomVisitor(SeawolfGrammarVisitor):
         except Exception:
             return "SEMANTIC ERROR"
 
+    def visitList(self, ctx):
+        list_visited = []
+        start = ctx.listexpr().list_()
+        list_visited.append(self.visit(start.expr()))
+        tail = start.list_()
+        while tail is not None:
+            list_visited.append(self.visit(tail.expr()))
+            tail = tail.list_()
+        return list_visited

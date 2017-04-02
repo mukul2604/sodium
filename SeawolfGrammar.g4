@@ -14,7 +14,7 @@ expr:   SUB INT                                        # negint
     |   <assoc=right> expr op = EXP expr               # Exponential
     |   expr op = FLRDIV expr                          # FloorDiv
     |   expr op = (ADD | SUB) expr                     # AddSub
-    |   expr op = IN expr                              # Inoperationstring
+    |   expr op = IN expr                              # Inoperation
     |   expr op = (LS | GT | LE | GE | EQL | NE) expr  # Relational
     |   NOT expr                                       # LogicalNOT
     |   expr op = (AND | OR) expr                      # Logical
@@ -23,11 +23,12 @@ expr:   SUB INT                                        # negint
     |   STRING                                         # string
     |   ID                                             # id
     |   '(' expr ')'                                   # parens
-    |   expr '[' expr ']'                              # Stringindexing
-    |  '[' expr_list ']'                                        # list
+    |   expr '[' expr ']'                              # Indexing
+    |   listexpr                                       # list
     ;
 
-expr_list :  expr ',' expr_list
+listexpr: '[' list_ ']';
+list_ :  expr ',' list_
           |  expr
           ;
 
