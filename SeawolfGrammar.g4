@@ -9,6 +9,13 @@ statmt:   expr NEWLINE              # printExpr
 
 expr:   SUB INT                                        # negint
     |   SUB REAL                                       # negreal
+    |   INT                                            # int
+    |   REAL                                           # real
+    |   STRING                                         # string
+    |   ID                                             # id
+    |   listexpr                                       # list
+    |   '(' expr ')'                                   # parens
+    |   expr '[' expr ']'                              # Indexing
     |   expr op = (MUL | DIV) expr                     # MulDiv
     |   expr op = MOD expr                             # Modulo
     |   <assoc=right> expr op = EXP expr               # Exponential
@@ -18,13 +25,6 @@ expr:   SUB INT                                        # negint
     |   expr op = (LS | GT | LE | GE | EQL | NE) expr  # Relational
     |   NOT expr                                       # LogicalNOT
     |   expr op = (AND | OR) expr                      # Logical
-    |   INT                                            # int
-    |   REAL                                           # real
-    |   STRING                                         # string
-    |   ID                                             # id
-    |   '(' expr ')'                                   # parens
-    |   expr '[' expr ']'                              # Indexing
-    |   listexpr                                       # list
     ;
 
 listexpr: '[' list_ ']';
