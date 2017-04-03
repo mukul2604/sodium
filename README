@@ -3,7 +3,12 @@ To install ANTLR4 follow the instructions here (https://github.com/ANTLR/ANTLR4/
 Then install the python runtime here (https://pypi.python.org/pypi/antlr4-python3-runtime/).
 
 Compile the Grammar as below:
+Window:
 set CLASSPATH="C:\downloads\ANTLR\antlr-4.6-complete.jar;"
+Linux:
+export CLASSPATH=".:/usr/local/lib/antlr-4.6-complete.jar:$CLASSPATH"
+
+Compile using below command:
 java org.antlr.v4.Tool -Dlanguage=Python3 -visitor -no-listener grammar.g4
 Or
 Use antlr plugin available in IDE
