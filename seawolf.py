@@ -10,30 +10,22 @@ from antlr4.error.ErrorListener import ErrorListener
 class MyErrorListener(ErrorListener):
     def __init__(self):
         super(MyErrorListener, self).__init__()
-        self.err = []
+        self.err = {}
 
     def syntaxError(self, recognizer, offendingSymbol, line, column, msg, e):
-        # self.err.append([msg,e])
-        self.err.append('SYNTAX ERROR' + ' Line:' + str(line) + ' Col:' + str(column))
+        if line in self.err:
+            return
+        self.err[line] = 'SYNTAX ERROR ' + 'Line: ' + str(line) + ' Column: ' + str(column)
 
-    def getError(self):
+    def get_error(self):
         return self.err
-
-#     def reportAmbiguity(self, recognizer, dfa, startIndex, stopIndex, exact, ambigAlts, configs):
-#         raise Exception("Oh2 no!!")
-#
-#     def reportAttemptingFullContext(self, recognizer, dfa, startIndex, stopIndex, conflictingAlts, configs):
-#         raise Exception("Oh3 no!!")
-#
-#     def reportContextSensitivity(self, recognizer, dfa, startIndex, stopIndex, prediction, configs):
-#         raise Exception("Oh4 no!!")
 
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
         input_stream = FileStream(sys.argv[1].strip())
     else:
-        input_stream = InputStream(sys.stdin.readline().strip())
+        input_stream = InputStream(sys.stdin.readline())
 
     lexer = SeawolfGrammarLexer(input_stream)
     token_stream = CommonTokenStream(lexer)
@@ -44,6 +36,6 @@ if __name__ == '__main__':
     visitor = CustomVisitor()
     visitor.visit(tree)
 
-    errors = errorListener.getError()
-    for x in errors:
+    errors = errorListener.get_error()
+    for x in errors.values():
         print(x)
