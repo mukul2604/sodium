@@ -30,7 +30,7 @@ class CustomVisitor(SeawolfGrammarVisitor):
         return -int(ctx.INT().getText())
 
     def visitString(self, ctx):
-        return str(ctx.STRING().getText()).strip('\'').strip('\"')
+        return '\'' + str(ctx.STRING().getText())[1:-1] + '\''
 
     def visitId(self, ctx):
         name = ctx.ID().getText()
@@ -92,6 +92,9 @@ class CustomVisitor(SeawolfGrammarVisitor):
         right = self.visit(ctx.expr(1))
         try:
             if ctx.op.type == SeawolfGrammarParser.ADD:
+                if type(left) == str:
+                    left = '\'' + left[1:-1]
+                    right = right[1:-1] + '\''
                 return left + right
             return left - right
         except Exception:
@@ -158,6 +161,9 @@ class CustomVisitor(SeawolfGrammarVisitor):
         value = self.visit(ctx.expr(0))
         index = self.visit(ctx.expr(1))
         try:
+            if type(value) == str:
+                value = value[1:-1]
+                return "\'" + value[index] + "\'"
             return value[index]
         except Exception:
             return "SEMANTIC ERROR"
@@ -165,6 +171,10 @@ class CustomVisitor(SeawolfGrammarVisitor):
     def visitInoperation(self, ctx):
         value1 = self.visit(ctx.expr(0))
         value2 = self.visit(ctx.expr(1))
+
+        if type(value1) == str and type(value2) == str:
+            value1 = value1[1:-1]
+            value2 = value2[1:-1]
         try:
             if value1 in value2:
                 return 1
