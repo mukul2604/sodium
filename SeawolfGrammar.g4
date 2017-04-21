@@ -11,7 +11,7 @@ codeblock: ifelsestat               # ifelsestatment
     |   blockstmt                   # blockstatment
     ;
 
-blockstmt: '{' INT '}';
+blockstmt: '{' statmt* '}';
 
 ifelsestat: ifstat elsestat? ;
 ifstat: 'if' '(' expr ')' blockstmt ;
