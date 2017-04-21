@@ -1,11 +1,21 @@
 grammar SeawolfGrammar;
 
-prog:   statmt+ ;
+prog:  codeblock | statmt+  ;
 
 statmt:   expr NEWLINE              # printExpr
     |   ID '=' expr ';' NEWLINE     # assign
     |   NEWLINE                     # blank
     ;
+
+codeblock: ifelsestat               # ifelsestatment
+    |   blockstmt                   # blockstatment
+    ;
+
+blockstmt: '{' INT '}';
+
+ifelsestat: ifstat elsestat? ;
+ifstat: 'if' '(' expr ')' blockstmt ;
+elsestat:  'else' blockstmt ;
 
 expr:   SUB INT                                        # negint
     |   SUB REAL                                       # negreal
