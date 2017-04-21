@@ -3,7 +3,7 @@ grammar SeawolfGrammar;
 prog:   statmt+ ;
 
 statmt:   expr NEWLINE              # printExpr
-    |   ID '=' expr NEWLINE         # assign
+    |   ID '=' expr ';' NEWLINE     # assign
     |   NEWLINE                     # blank
     ;
 
@@ -58,7 +58,7 @@ OR  : 'or' ;
 IN : 'in';
 // Operands
 
-ID  :   [a-zA-Z]+ ;      // match identifiers
+ID  :   [a-zA-Z][A-Za-z0-9_]* ;      // match identifiers
 INT :   [0-9]+ ;         // match integers
 REAL:   INT ( '.' (INT)? )?  ; // real numbers
 fragment STRING_ESCAPE_SEQ
