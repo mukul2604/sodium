@@ -1,2 +1,2 @@
 #! /bin/sh
-python3 seawolf.py  test_01.expr
+python3 main.py  test_01.expr
