@@ -188,9 +188,15 @@ class CustomVisitor(SeawolfGrammarVisitor):
         start = ctx.listexpr().list_()
         if start.expr() is None:
             return "[]"
-        list_visited.append(self.visit(start.expr()))
+        value = self.visit(start.expr())
+        if type(value) == str:
+            value = value[1:-1]
+        list_visited.append(value)
         tail = start.list_()
         while tail is not None:
-            list_visited.append(self.visit(tail.expr()))
+            value = self.visit(tail.expr())
+            if type(value) == str:
+                value = value[1:-1]
+            list_visited.append(value)
             tail = tail.list_()
         return list_visited
