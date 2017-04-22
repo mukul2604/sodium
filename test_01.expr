@@ -124,3 +124,10 @@ while (a > 0) {
 }
 mmn
 
+{
+    while(mmn <= 400) {
+        mmn = mmn + 10;
+    }
+   }
+
+mmn
