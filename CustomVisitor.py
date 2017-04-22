@@ -220,7 +220,7 @@ class CustomVisitor(SeawolfGrammarVisitor):
                 break
 
         if block_evaluated is False and ctx.if_statement().cond_stat_block() is not None:
-            self.visit(ctx.if_stat().stat_block())
+            self.visit(ctx.if_statement().cond_stat_block())
 
         return None
 

@@ -4,12 +4,12 @@ prog:  block EOF?  ;
 
 block: stat*;
 
-stat:   expr                # printExpr
-    |   ID '=' expr ';'     # assign
-    |   if_statement        # ifstat
-    |   while_statement     # whilestat
-    |   braced_statement    # blockstat
-    |   NEWLINE             # blank
+stat:   PRINT LPAREN expr RPAREN SEMICOL            # printExpr
+    |   ID ASSIGN expr SEMICOL                      # assign
+    |   if_statement                                # ifstat
+    |   while_statement                             # whilestat
+    |   braced_statement                            # blockstat
+    |   NEWLINE                                     # blank
     ;
 
 if_statement
@@ -69,6 +69,8 @@ FLRDIV:  '//' ;
 ADD :   '+' ;
 SUB :   '-' ;
 COMMA : ',';
+SEMICOL: ';';
+ASSIGN: '=';
 
 // Relational Operators
 LS  :   '<' ;
@@ -90,7 +92,7 @@ OBRACE : '{';
 CBRACE : '}';
 LPAREN: '(';
 RPAREN: ')';
-
+PRINT : 'print';
 IF : 'if';
 ELSE : 'else';
 WHILE : 'while';
