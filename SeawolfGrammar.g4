@@ -1,13 +1,27 @@
 grammar SeawolfGrammar;
 
-prog:  statmt+  ;
+prog:  block EOF?  ;
 
-statmt:   expr NEWLINE              # printExpr
+block: stat*;
+
+stat:   expr NEWLINE              # printExpr
     |   ID '=' expr ';' NEWLINE     # assign
+    |   if_stat                     # ifstat
     |   NEWLINE                     # blank
     ;
 
+if_stat
+ : IF condition_block (ELSE IF condition_block)* (ELSE stat_block)?
+ ;
 
+ condition_block
+ : OBRACKET expr CBRACKET stat_block
+ ;
+
+ stat_block
+ : OBRACE block CBRACE
+ | stat
+ ;
 
 expr:   SUB INT                                        # negint
     |   SUB REAL                                       # negreal
@@ -16,7 +30,7 @@ expr:   SUB INT                                        # negint
     |   STRING                                         # string
     |   ID                                             # id
     |   listexpr                                       # list
-    |   '(' expr ')'                                   # parens
+    |   OBRACKET expr CBRACKET                         # parens
     |   expr '[' expr ']'                              # Indexing
     |   expr op = (MUL | DIV) expr                     # MulDiv
     |   expr op = MOD expr                             # Modulo
@@ -60,6 +74,13 @@ OR  : 'or' ;
 IN : 'in';
 // Operands
 
+OBRACE : '{';
+CBRACE : '}';
+OBRACKET: '(';
+CBRACKET: ')';
+
+IF : 'if';
+ELSE : 'else';
 ID  :   [a-zA-Z][A-Za-z0-9_]* ;      // match identifiers
 INT :   [0-9]+ ;         // match integers
 REAL:   INT ( '.' (INT)? )?  ; // real numbers
