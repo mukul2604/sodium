@@ -17,7 +17,7 @@ if_statement
  ;
 
  condition_block
- : OBRACKET expr CBRACKET cond_stat_block
+ : LPAREN expr RPAREN cond_stat_block
  ;
 
  cond_stat_block
@@ -42,7 +42,7 @@ expr:   SUB INT                                        # negint
     |   STRING                                         # string
     |   ID                                             # id
     |   listexpr                                       # list
-    |   OBRACKET expr CBRACKET                         # parens
+    |   LPAREN expr RPAREN                         # parens
     |   expr '[' expr ']'                              # Indexing
     |   expr op = (MUL | DIV) expr                     # MulDiv
     |   expr op = MOD expr                             # Modulo
@@ -88,8 +88,8 @@ IN : 'in';
 
 OBRACE : '{';
 CBRACE : '}';
-OBRACKET: '(';
-CBRACKET: ')';
+LPAREN: '(';
+RPAREN: ')';
 
 IF : 'if';
 ELSE : 'else';
