@@ -200,7 +200,3 @@ class CustomVisitor(SeawolfGrammarVisitor):
             list_visited.append(value)
             tail = tail.list_()
         return list_visited
-
-    def visitBlockstatment(self, ctx):
-        blockstatement = self.visit(ctx.blockstmt())
-        return blockstatement
