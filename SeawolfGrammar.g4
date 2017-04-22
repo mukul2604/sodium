@@ -5,13 +5,14 @@ prog:  block EOF?  ;
 block: stat*;
 
 stat:   expr                # printExpr
-    |   ID '=' expr ';'             # assign
-    |   if_stat                     # ifstat
-    |   braced_stat                 # blockstat
-    |   NEWLINE                     # blank
+    |   ID '=' expr ';'     # assign
+    |   if_statement        # ifstat
+    |   while_statement     # whilestat
+    |   braced_statement    # blockstat
+    |   NEWLINE             # blank
     ;
 
-if_stat
+if_statement
  : IF condition_block (ELSE IF condition_block)* (ELSE cond_stat_block)?
  ;
 
@@ -20,13 +21,19 @@ if_stat
  ;
 
  cond_stat_block
- : braced_stat
+ : braced_statement
  | stat
  ;
 
- braced_stat
+braced_statement
  : OBRACE block CBRACE
  ;
+
+while_statement
+ : WHILE  condition_block
+ ;
+
+
 
 expr:   SUB INT                                        # negint
     |   SUB REAL                                       # negreal
@@ -86,6 +93,7 @@ CBRACKET: ')';
 
 IF : 'if';
 ELSE : 'else';
+WHILE : 'while';
 ID  :   [a-zA-Z][A-Za-z0-9_]* ;      // match identifiers
 INT :   [0-9]+ ;         // match integers
 REAL:   INT ( '.' (INT)? )?  ; // real numbers

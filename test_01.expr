@@ -111,10 +111,16 @@ a
     b
     n = 10;
     if (a > b) {
-        a = 121212;
+        a
         a
     }
 }
-{a}
-n
+
+mmn = 0;
+a=100;
+while (a > 0) {
+    a = a - 10;
+    mmn = mmn + 1;
+}
+mmn
 
