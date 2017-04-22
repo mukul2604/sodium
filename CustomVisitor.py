@@ -200,6 +200,12 @@ class CustomVisitor(SeawolfGrammarVisitor):
             list_visited.append(value)
             tail = tail.list_()
         return list_visited
+    # not needed
+    # def visitBlockstat(self, ctx:SeawolfGrammarParser.BlockstatContext):
+    #     braced_stat = ctx.braced_stat()
+    #     self.visit(braced_stat)
+    #     # block = braced_stat.block()
+    #     # self.visit(block)
 
     def visitIfstat(self, ctx:SeawolfGrammarParser.IfstatContext):
         condition_block = ctx.if_stat().condition_block()
@@ -209,10 +215,10 @@ class CustomVisitor(SeawolfGrammarVisitor):
 
             if evaluated is True:
                 block_evaluated = evaluated
-                self.visit(condition.stat_block())
+                self.visit(condition.cond_stat_block())
                 break
         # print(ctx.if_stat().stat_block(), block_evaluated)
-        if block_evaluated is False and ctx.if_stat().stat_block() is not None:
+        if block_evaluated is False and ctx.if_stat().cond_stat_block() is not None:
             self.visit(ctx.if_stat().stat_block())
 
         return None

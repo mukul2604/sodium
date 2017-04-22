@@ -4,23 +4,28 @@ prog:  block EOF?  ;
 
 block: stat*;
 
-stat:   expr NEWLINE              # printExpr
-    |   ID '=' expr ';' NEWLINE     # assign
+stat:   expr                # printExpr
+    |   ID '=' expr ';'             # assign
     |   if_stat                     # ifstat
+    |   braced_stat                 # blockstat
     |   NEWLINE                     # blank
     ;
 
 if_stat
- : IF condition_block (ELSE IF condition_block)* (ELSE stat_block)?
+ : IF condition_block (ELSE IF condition_block)* (ELSE cond_stat_block)?
  ;
 
  condition_block
- : OBRACKET expr CBRACKET stat_block
+ : OBRACKET expr CBRACKET cond_stat_block
  ;
 
- stat_block
- : OBRACE block CBRACE
+ cond_stat_block
+ : braced_stat
  | stat
+ ;
+
+ braced_stat
+ : OBRACE block CBRACE
  ;
 
 expr:   SUB INT                                        # negint
