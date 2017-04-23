@@ -8,9 +8,26 @@ class CustomVisitor(SeawolfGrammarVisitor):
         self.memory = {}
 
     def visitAssign(self, ctx):
-        name = ctx.ID().getText()
+        # name = ctx.ID().getText()
+        id = ctx.ID()
+        if id is not None:
+            name = id.getText()
+            value = self.visit(ctx.expr())
+            self.memory[name] = value
+            return value
+
+        name = ctx.listid().ID()[0].getText()
+        list_values = self.memory[name]
+
+        try:
+            index = int(ctx.listid().INT().getText())
+        except Exception:
+            index_name = ctx.listid().ID()[1].getText()
+            index = self.memory[index_name]
+
         value = self.visit(ctx.expr())
-        self.memory[name] = value
+        list_values[index] = value
+        self.memory[name] = list_values
         return value
 
     def visitPrintExpr(self, ctx):
@@ -109,7 +126,7 @@ class CustomVisitor(SeawolfGrammarVisitor):
                 # relation is only for integers here
                 raise Exception
             if ctx.op.type == SeawolfGrammarParser.LS:
-                result =  left < right
+                result = left < right
             if ctx.op.type == SeawolfGrammarParser.GT:
                 result = left > right
             if ctx.op.type == SeawolfGrammarParser.LE:

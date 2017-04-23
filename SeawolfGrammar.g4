@@ -5,7 +5,7 @@ prog:  block EOF?  ;
 block: stat*;
 
 stat:   PRINT LPAREN expr RPAREN SEMICOL            # printExpr
-    |   ID ASSIGN expr SEMICOL                      # assign
+    |   (ID | listid) ASSIGN expr SEMICOL           # assign
     |   if_statement                                # ifstat
     |   while_statement                             # whilestat
     |   braced_statement                            # blockstat
@@ -43,7 +43,7 @@ expr:   SUB INT                                        # negint
     |   ID                                             # id
     |   listexpr                                       # list
     |   LPAREN expr RPAREN                         # parens
-    |   expr '[' expr ']'                              # Indexing
+    |   expr SQLPAREN expr SQRPAREN                              # Indexing
     |   expr op = (MUL | DIV) expr                     # MulDiv
     |   expr op = MOD expr                             # Modulo
     |   <assoc=right> expr op = EXP expr               # Exponential
@@ -55,11 +55,12 @@ expr:   SUB INT                                        # negint
     |   expr op = (AND | OR) expr                      # Logical
     ;
 
-listexpr: '[' list_ ']';
-list_ :  expr ',' list_
+listid : ID (SQLPAREN (ID | INT )SQRPAREN);
+listexpr: SQLPAREN list_  SQRPAREN;
+list_ :  expr COMMA list_
           |  expr | empty_list
           ;
-empty_list: '[' WS ']';
+empty_list: SQLPAREN WS SQRPAREN;
 
 MUL :   '*' ; // assigns token name to '*' used above in grammar
 DIV :   '/' ;
@@ -90,13 +91,16 @@ IN : 'in';
 
 OBRACE : '{';
 CBRACE : '}';
-LPAREN: '(';
-RPAREN: ')';
+LPAREN : '(';
+RPAREN : ')';
+SQLPAREN : '[';
+SQRPAREN : ']';
 PRINT : 'print';
 IF : 'if';
 ELSE : 'else';
 WHILE : 'while';
 ID  :   [a-zA-Z][A-Za-z0-9_]* ;      // match identifiers
+
 INT :   [0-9]+ ;         // match integers
 REAL:   INT ( '.' (INT)? )?  ; // real numbers
 fragment STRING_ESCAPE_SEQ
