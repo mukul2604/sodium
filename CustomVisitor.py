@@ -1,5 +1,6 @@
 from SeawolfGrammarVisitor import SeawolfGrammarVisitor
 from SeawolfGrammarParser import SeawolfGrammarParser
+import sys
 
 
 class CustomVisitor(SeawolfGrammarVisitor):
@@ -15,6 +16,7 @@ class CustomVisitor(SeawolfGrammarVisitor):
     def visitPrintExpr(self, ctx):
         value = self.visit(ctx.expr())
         print(value)
+        # sys.stdout.write(str(value))
         return 0
 
     def visitReal(self, ctx):
@@ -30,7 +32,7 @@ class CustomVisitor(SeawolfGrammarVisitor):
         return -int(ctx.INT().getText())
 
     def visitString(self, ctx):
-        return '\'' + str(ctx.STRING().getText())[1:-1] + '\''
+        return str(ctx.STRING().getText())[1:-1]
 
     def visitId(self, ctx):
         name = ctx.ID().getText()
@@ -92,9 +94,6 @@ class CustomVisitor(SeawolfGrammarVisitor):
         right = self.visit(ctx.expr(1))
         try:
             if ctx.op.type == SeawolfGrammarParser.ADD:
-                if type(left) == str:
-                    left = '\'' + left[1:-1]
-                    right = right[1:-1] + '\''
                 return left + right
             return left - right
         except Exception:
