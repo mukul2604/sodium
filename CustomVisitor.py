@@ -103,26 +103,27 @@ class CustomVisitor(SeawolfGrammarVisitor):
     def visitRelational(self, ctx):
         left = self.visit(ctx.expr(0))
         right = self.visit(ctx.expr(1))
+        result = None
 
         try:
             if type(left) != int or type(right) != int:
                 # relation is only for integers here
                 raise Exception
             if ctx.op.type == SeawolfGrammarParser.LS:
-                return left < right
+                result =  left < right
             if ctx.op.type == SeawolfGrammarParser.GT:
-                return left > right
+                result = left > right
             if ctx.op.type == SeawolfGrammarParser.LE:
-                return left <= right
+                result = left <= right
             if ctx.op.type == SeawolfGrammarParser.GE:
-                return left >= right
+                result = left >= right
             if ctx.op.type == SeawolfGrammarParser.EQL:
-                return left == right
+                result = left == right
             if ctx.op.type == SeawolfGrammarParser.NE:
-                return left != right
-            print ("invalid relational operator")
+                result = left != right
         except Exception:
             return "SEMANTIC ERROR"
+        return int(result)
 
     def visitLogicalNOT(self, ctx):
         a = self.visit(ctx.expr())
@@ -137,19 +138,13 @@ class CustomVisitor(SeawolfGrammarVisitor):
         left = self.visit(ctx.expr(0))
         right = self.visit(ctx.expr(1))
         try:
-            if type(left) != int or type(right) != int:
-                # logical is only for integers here
-                raise Exception
+            # if type(left) != int or type(right) != int:
+            #     # logical is only for integers here
+            #     raise Exception
             if ctx.op.type == SeawolfGrammarParser.AND:
-                if left and right:
-                    return 1
-                else:
-                    return 0
+                return int(left and right)
             if ctx.op.type == SeawolfGrammarParser.OR:
-                if left or right:
-                    return 1
-                else:
-                    return 0
+                return int(left or right)
             print("invalid logical operator")
         except Exception:
             return "SEMANTIC ERROR"
@@ -176,10 +171,11 @@ class CustomVisitor(SeawolfGrammarVisitor):
             value1 = value1[1:-1]
             value2 = value2[1:-1]
         try:
-            if value1 in value2:
-                return 1
-            else:
-                return 0
+            return int(value1 in value2)
+            # if value1 in value2:
+            #     return 1
+            # else:
+            #     return 0
         except Exception:
             return "SEMANTIC ERROR"
 
@@ -201,35 +197,36 @@ class CustomVisitor(SeawolfGrammarVisitor):
             tail = tail.list_()
         return list_visited
 
-    # not needed to visit block explicitly
+    # not needed to visit block statement explicitly
     # def visitBlockstat(self, ctx:SeawolfGrammarParser.BlockstatContext):
     #     braced_stat = ctx.braced_stat()
     #     self.visit(braced_stat)
     #     # block = braced_stat.block()
     #     # self.visit(block)
 
-    def visitIfstat(self, ctx:SeawolfGrammarParser.IfstatContext):
+    def visitIfstat(self, ctx):
         condition_block = ctx.if_statement().condition_block()
-        block_evaluated = False
+        block_evaluated = int(False)
         for condition in condition_block:
             evaluated = self.visit(condition.expr())
 
-            if evaluated is True:
+            if evaluated is int(True):
                 block_evaluated = evaluated
                 self.visit(condition.cond_stat_block())
                 break
 
-        if block_evaluated is False and ctx.if_statement().cond_stat_block() is not None:
+        if block_evaluated is int(False) and ctx.if_statement().cond_stat_block() is not None:
+
             self.visit(ctx.if_statement().cond_stat_block())
 
         return None
 
-    def visitWhilestat(self, ctx:SeawolfGrammarParser.WhilestatContext):
+    def visitWhilestat(self, ctx):
         while_statement = ctx.while_statement()
         condition_block = while_statement.condition_block()
         guard = self.visit(condition_block.expr())
 
-        while guard is True:
+        while guard is int(True):
             self.visit(condition_block.cond_stat_block())
             guard = self.visit(condition_block.expr())
 

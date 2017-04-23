@@ -4,22 +4,18 @@ print([ 1,   2,3 ] + [2,3]);
 
 
 {
-  number = 100;
-
-  isPrime = 1;
+  number = 100;  isPrime = 1;
 
   i = 2;
-  value = (isPrime == 1) and (i < number);
-  print(i);
-  print(value);
+
   while(isPrime == 1 and i < number) {
-    print(number%i);
+
     if (number%i==0) {
-      print("mukul");
+
       isPrime = 0;
 
     }
-   print(i);
+
    i = i + 1;
 
   }
