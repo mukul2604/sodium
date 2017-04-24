@@ -19,6 +19,7 @@ class CustomVisitor(SeawolfGrammarVisitor):
             name = ctx.listid().ID().getText()
             list_values = self.memory[name]
             list_index = ctx.listid().list_index()[0]
+
             try:
                 index = int(list_index.INT().getText())
             except Exception:
