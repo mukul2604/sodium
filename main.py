@@ -1,3 +1,5 @@
+# Name: Mukul Sharma  ID:110900654
+
 import sys
 from antlr4 import *
 from antlr4.InputStream import InputStream
@@ -15,7 +17,6 @@ class MyErrorListener(ErrorListener):
     def syntaxError(self, recognizer, offendingSymbol, line, column, msg, e):
         if line in self.err:
             return
-        # self.err[line] = 'SYNTAX ERROR ' + 'Line: ' + str(line) + ' Column: ' + str(column)
         print("SYNTAX ERROR")
         exit(-1)
 
