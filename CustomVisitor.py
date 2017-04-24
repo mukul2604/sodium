@@ -33,7 +33,6 @@ class CustomVisitor(SeawolfGrammarVisitor):
             print("SYNTAX ERROR")
             exit(-1)
 
-
     def visitPrintExpr(self, ctx):
         value = self.visit(ctx.expr())
         print(value)
@@ -75,7 +74,7 @@ class CustomVisitor(SeawolfGrammarVisitor):
         except ZeroDivisionError:
                 return "Division by Zero Error"
         except Exception:
-            print("SEMANTIC ERROR")
+            print("SYNTAX ERROR")
             exit(-1)
 
     def visitModulo(self, ctx):
@@ -88,7 +87,9 @@ class CustomVisitor(SeawolfGrammarVisitor):
         except ZeroDivisionError:
             return "Modulo by Zero Error"
         except Exception:
-            return "SEMANTIC ERROR"
+            print("SYNTAX ERROR")
+            exit(-1)
+
 
     def visitExponential(self, ctx):
         left = self.visit(ctx.expr(0))
@@ -97,7 +98,9 @@ class CustomVisitor(SeawolfGrammarVisitor):
             if ctx.op.type == SeawolfGrammarParser.EXP:
                 return pow(left, right)
         except Exception:
-            return "SEMANTIC ERROR"
+            print("SYNTAX ERROR")
+            exit(-1)
+
 
     def visitFloorDiv(self, ctx):
         left = self.visit(ctx.expr(0))
@@ -109,7 +112,9 @@ class CustomVisitor(SeawolfGrammarVisitor):
         except ZeroDivisionError:
             return "Floor Division by Zero Error"
         except Exception:
-            return "SEMANTIC ERROR"
+            print("SYNTAX ERROR")
+            exit(-1)
+
 
     def visitAddSub(self, ctx):
         left = self.visit(ctx.expr(0))
@@ -119,7 +124,9 @@ class CustomVisitor(SeawolfGrammarVisitor):
                 return left + right
             return left - right
         except Exception:
-            return "SEMANTIC ERROR"
+            print("SYNTAX ERROR")
+            exit(-1)
+
 
     def visitRelational(self, ctx):
         left = self.visit(ctx.expr(0))
@@ -143,7 +150,8 @@ class CustomVisitor(SeawolfGrammarVisitor):
             if ctx.op.type == SeawolfGrammarParser.NE:
                 result = left != right
         except Exception:
-            return "SEMANTIC ERROR"
+            print("SYNTAX ERROR")
+            exit(-1)
         return int(result)
 
     def visitLogicalNOT(self, ctx):
@@ -153,7 +161,9 @@ class CustomVisitor(SeawolfGrammarVisitor):
                 raise Exception
             return int(not a)
         except Exception:
-            return "SEMANTIC ERROR"
+            print("SYNTAX ERROR")
+            exit(-1)
+
 
     def visitLogical(self, ctx):
         left = self.visit(ctx.expr(0))
@@ -168,7 +178,9 @@ class CustomVisitor(SeawolfGrammarVisitor):
                 return int(left or right)
             print("invalid logical operator")
         except Exception:
-            return "SEMANTIC ERROR"
+            print("SYNTAX ERROR")
+            exit(-1)
+
 
     def visitParens(self, ctx):
         return self.visit(ctx.expr())
@@ -182,7 +194,9 @@ class CustomVisitor(SeawolfGrammarVisitor):
                 return "\'" + value[index] + "\'"
             return value[index]
         except Exception:
-            return "SEMANTIC ERROR"
+            print("SYNTAX ERROR")
+            exit(-1)
+
 
     def visitInoperation(self, ctx):
         value1 = self.visit(ctx.expr(0))
@@ -198,7 +212,9 @@ class CustomVisitor(SeawolfGrammarVisitor):
             # else:
             #     return 0
         except Exception:
-            return "SEMANTIC ERROR"
+            print("SYNTAX ERROR")
+            exit(-1)
+
 
     def visitList(self, ctx):
         list_visited = []
