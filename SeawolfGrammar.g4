@@ -1,8 +1,8 @@
 grammar SeawolfGrammar;
 
-prog:  block EOF?  ;
+prog:  code_block EOF?  ;
 
-block: stat*;
+code_block: stat*;
 
 stat:   PRINT LPAREN expr RPAREN SEMICOL            # printExpr
     |   (ID | listid) ASSIGN expr SEMICOL           # assign
@@ -11,6 +11,10 @@ stat:   PRINT LPAREN expr RPAREN SEMICOL            # printExpr
     |   braced_statement                            # blockstat
     |   NEWLINE                                     # blank
     ;
+
+while_statement
+ : WHILE  condition_block
+ ;
 
 if_statement
  : IF condition_block (ELSE IF condition_block)* (ELSE cond_stat_block)?
@@ -26,13 +30,8 @@ if_statement
  ;
 
 braced_statement
- : OBRACE block CBRACE
+ : LBRACE code_block RBRACE
  ;
-
-while_statement
- : WHILE  condition_block
- ;
-
 
 
 expr:   SUB INT                                        # negint
@@ -90,8 +89,8 @@ OR  : 'or' ;
 IN : 'in';
 // Operands
 
-OBRACE : '{';
-CBRACE : '}';
+LBRACE : '{';
+RBRACE : '}';
 LPAREN : '(';
 RPAREN : ')';
 SQLPAREN : '[';
