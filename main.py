@@ -15,7 +15,7 @@ class MyErrorListener(ErrorListener):
     def syntaxError(self, recognizer, offendingSymbol, line, column, msg, e):
         if line in self.err:
             return
-        self.err[line] = 'SYNTAX ERROR ' + 'Line: ' + str(line) + ' Column: ' + str(column)
+        # self.err[line] = 'SYNTAX ERROR ' + 'Line: ' + str(line) + ' Column: ' + str(column)
         print("SYNTAX ERROR")
         exit(-1)
 
@@ -38,6 +38,6 @@ if __name__ == '__main__':
     visitor = CustomVisitor()
     visitor.visit(tree)
 
-    errors = errorListener.get_error()
-    for x in errors.values():
-        print(x)
+    # errors = errorListener.get_error()
+    # for x in errors.values():
+    #     print(x)
