@@ -55,7 +55,7 @@ expr:   SUB INT                                        # negint
     |   expr op = (AND | OR) expr                      # Logical
     ;
 
-listid : ID (SQLPAREN (ID | INT )SQRPAREN);
+listid : ID (SQLPAREN (ID | INT ) SQRPAREN);
 listexpr: SQLPAREN list_  SQRPAREN;
 list_ :  expr COMMA list_
           |  expr | empty_list
