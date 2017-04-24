@@ -1,6 +1,5 @@
 from SeawolfGrammarVisitor import SeawolfGrammarVisitor
 from SeawolfGrammarParser import SeawolfGrammarParser
-import sys
 
 
 class CustomVisitor(SeawolfGrammarVisitor):
@@ -31,7 +30,7 @@ class CustomVisitor(SeawolfGrammarVisitor):
             self.memory[name] = list_values
             return value
         except Exception:
-            print("SYNTAX ERROR")
+            print("SEMANTIC ERROR")
             exit(-1)
 
     def visitPrintExpr(self, ctx):
@@ -73,9 +72,9 @@ class CustomVisitor(SeawolfGrammarVisitor):
             else:
                 return left / right
         except ZeroDivisionError:
-                return "Division by Zero Error"
+            return "Division by Zero Error"
         except Exception:
-            print("SYNTAX ERROR")
+            print("SEMANTIC ERROR")
             exit(-1)
 
     def visitModulo(self, ctx):
@@ -88,9 +87,8 @@ class CustomVisitor(SeawolfGrammarVisitor):
         except ZeroDivisionError:
             return "Modulo by Zero Error"
         except Exception:
-            print("SYNTAX ERROR")
+            print("SEMANTIC ERROR")
             exit(-1)
-
 
     def visitExponential(self, ctx):
         left = self.visit(ctx.expr(0))
@@ -99,9 +97,8 @@ class CustomVisitor(SeawolfGrammarVisitor):
             if ctx.op.type == SeawolfGrammarParser.EXP:
                 return pow(left, right)
         except Exception:
-            print("SYNTAX ERROR")
+            print("SEMANTIC ERROR")
             exit(-1)
-
 
     def visitFloorDiv(self, ctx):
         left = self.visit(ctx.expr(0))
@@ -113,9 +110,8 @@ class CustomVisitor(SeawolfGrammarVisitor):
         except ZeroDivisionError:
             return "Floor Division by Zero Error"
         except Exception:
-            print("SYNTAX ERROR")
+            print("SEMANTIC ERROR")
             exit(-1)
-
 
     def visitAddSub(self, ctx):
         left = self.visit(ctx.expr(0))
@@ -125,9 +121,8 @@ class CustomVisitor(SeawolfGrammarVisitor):
                 return left + right
             return left - right
         except Exception:
-            print("SYNTAX ERROR")
+            print("SEMANTIC ERROR")
             exit(-1)
-
 
     def visitRelational(self, ctx):
         left = self.visit(ctx.expr(0))
@@ -151,7 +146,7 @@ class CustomVisitor(SeawolfGrammarVisitor):
             if ctx.op.type == SeawolfGrammarParser.NE:
                 result = left != right
         except Exception:
-            print("SYNTAX ERROR")
+            print("SEMANTIC ERROR")
             exit(-1)
         return int(result)
 
@@ -162,9 +157,8 @@ class CustomVisitor(SeawolfGrammarVisitor):
                 raise Exception
             return int(not a)
         except Exception:
-            print("SYNTAX ERROR")
+            print("SEMANTIC ERROR")
             exit(-1)
-
 
     def visitLogical(self, ctx):
         left = self.visit(ctx.expr(0))
@@ -179,9 +173,8 @@ class CustomVisitor(SeawolfGrammarVisitor):
                 return int(left or right)
             print("invalid logical operator")
         except Exception:
-            print("SYNTAX ERROR")
+            print("SEMANTIC ERROR")
             exit(-1)
-
 
     def visitParens(self, ctx):
         return self.visit(ctx.expr())
@@ -195,9 +188,8 @@ class CustomVisitor(SeawolfGrammarVisitor):
                 return "\'" + value[index] + "\'"
             return value[index]
         except Exception:
-            print("SYNTAX ERROR")
+            print("SEMANTIC ERROR")
             exit(-1)
-
 
     def visitInoperation(self, ctx):
         value1 = self.visit(ctx.expr(0))
@@ -208,14 +200,9 @@ class CustomVisitor(SeawolfGrammarVisitor):
             value2 = value2[1:-1]
         try:
             return int(value1 in value2)
-            # if value1 in value2:
-            #     return 1
-            # else:
-            #     return 0
         except Exception:
-            print("SYNTAX ERROR")
+            print("SEMANTIC ERROR")
             exit(-1)
-
 
     def visitList(self, ctx):
         list_visited = []
@@ -235,16 +222,10 @@ class CustomVisitor(SeawolfGrammarVisitor):
             tail = tail.list_()
         return list_visited
 
-    # not needed to visit block statement explicitly
-    # def visitBlockstat(self, ctx:SeawolfGrammarParser.BlockstatContext):
-    #     braced_stat = ctx.braced_stat()
-    #     self.visit(braced_stat)
-    #     # block = braced_stat.block()
-    #     # self.visit(block)
-
     def visitIfstat(self, ctx):
         condition_block = ctx.if_statement().condition_block()
         block_evaluated = int(False)
+
         for condition in condition_block:
             evaluated = self.visit(condition.expr())
 
@@ -253,8 +234,8 @@ class CustomVisitor(SeawolfGrammarVisitor):
                 self.visit(condition.cond_stat_block())
                 break
 
-        if block_evaluated is int(False) and ctx.if_statement().cond_stat_block() is not None:
-
+        if block_evaluated is int(False) and \
+                        ctx.if_statement().cond_stat_block() is not None:
             self.visit(ctx.if_statement().cond_stat_block())
 
         return None
@@ -269,6 +250,3 @@ class CustomVisitor(SeawolfGrammarVisitor):
             guard = self.visit(condition_block.expr())
 
         return None
-
-
-
