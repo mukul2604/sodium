@@ -16,13 +16,13 @@ class CustomVisitor(SeawolfGrammarVisitor):
                 self.memory[name] = value
                 return value
 
-            name = ctx.listid().ID()[0].getText()
+            name = ctx.listid().ID().getText()
             list_values = self.memory[name]
-
+            list_index = ctx.listid().list_index()[0]
             try:
-                index = int(ctx.listid().INT().getText())
+                index = int(list_index.INT().getText())
             except Exception:
-                index_name = ctx.listid().ID()[1].getText()
+                index_name = list_index.ID().getText()
                 index = self.memory[index_name]
 
             value = self.visit(ctx.expr())
