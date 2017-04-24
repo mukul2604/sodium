@@ -16,7 +16,7 @@ class MyErrorListener(ErrorListener):
         if line in self.err:
             return
         self.err[line] = 'SYNTAX ERROR ' + 'Line: ' + str(line) + ' Column: ' + str(column)
-        print(self.err[line])
+        print("SYNTAX ERROR")
         exit(-1)
 
     def get_error(self):
