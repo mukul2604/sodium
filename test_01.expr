@@ -1,42 +1,25 @@
 {
 
-    data = [ [ 100, 42 ], [ 100, 50 ], [ 123, 456 ], [ 300, 9000 ] ];
+  number1 = 25;
 
-    result = [ 0, 0, 0, 0 ];
+  number2 = 10;
 
-    i = 0;
+  while(number1 <> number2) {
 
-    while (i < 4){
+    if (number1 > number2) {
 
-        a = data[i][0];
+      number1 = number1 - number2;
 
-        b = data[i][1];
+    } else {
 
-        if (a > 0){
-
-            while (b > 0){
-
-                if (a > b){
-
-                    a = a - b;
-
-                } else {
-
-                    b = b - a;
-
-                }
-
-           }
-
-        }
-
-        result[i] = a;
-
-        i = i + 1;
+      number2 = number2 - number1;
 
     }
 
-    print(result);
+  }
+
+  print("The greatest common divider is: ");
+
+  print(number1);
 
 }
-
