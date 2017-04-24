@@ -8,27 +8,31 @@ class CustomVisitor(SeawolfGrammarVisitor):
         self.memory = {}
 
     def visitAssign(self, ctx):
-        # name = ctx.ID().getText()
-        id = ctx.ID()
-        if id is not None:
-            name = id.getText()
-            value = self.visit(ctx.expr())
-            self.memory[name] = value
-            return value
-
-        name = ctx.listid().ID()[0].getText()
-        list_values = self.memory[name]
-
         try:
-            index = int(ctx.listid().INT().getText())
-        except Exception:
-            index_name = ctx.listid().ID()[1].getText()
-            index = self.memory[index_name]
+            id = ctx.ID()
+            if id is not None:
+                name = id.getText()
+                value = self.visit(ctx.expr())
+                self.memory[name] = value
+                return value
 
-        value = self.visit(ctx.expr())
-        list_values[index] = value
-        self.memory[name] = list_values
-        return value
+            name = ctx.listid().ID()[0].getText()
+            list_values = self.memory[name]
+
+            try:
+                index = int(ctx.listid().INT().getText())
+            except Exception:
+                index_name = ctx.listid().ID()[1].getText()
+                index = self.memory[index_name]
+
+            value = self.visit(ctx.expr())
+            list_values[index] = value
+            self.memory[name] = list_values
+            return value
+        except Exception:
+            print("SYNTAX ERROR")
+            exit(-1)
+
 
     def visitPrintExpr(self, ctx):
         value = self.visit(ctx.expr())
@@ -71,7 +75,8 @@ class CustomVisitor(SeawolfGrammarVisitor):
         except ZeroDivisionError:
                 return "Division by Zero Error"
         except Exception:
-            return "SEMANTIC ERROR"
+            print("SEMANTIC ERROR")
+            exit(-1)
 
     def visitModulo(self, ctx):
         left = self.visit(ctx.expr(0))
