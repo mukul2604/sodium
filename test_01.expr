@@ -147,6 +147,9 @@ print([ 1,   2,3 ] + [2,3]);
     print(result);
 
 }
+data[0][1] = 999;
+p =data[0];
+print(p);
 a=10/2;
 print(a);
 b = [1,2,3,4];

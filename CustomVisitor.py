@@ -1,5 +1,6 @@
 from SeawolfGrammarVisitor import SeawolfGrammarVisitor
 from SeawolfGrammarParser import SeawolfGrammarParser
+import sys
 
 
 class CustomVisitor(SeawolfGrammarVisitor):
@@ -15,18 +16,30 @@ class CustomVisitor(SeawolfGrammarVisitor):
                 self.memory[name] = value
                 return value
 
+            value = self.visit(ctx.expr())
             name = ctx.listid().ID().getText()
             list_values = self.memory[name]
-            list_index = ctx.listid().list_index()[0]
+            list_index0 = ctx.listid().list_index()[0]
 
             try:
-                index = int(list_index.INT().getText())
+                index0 = int(list_index0.INT().getText())
             except Exception:
-                index_name = list_index.ID().getText()
-                index = self.memory[index_name]
+                index_name = list_index0.ID().getText()
+                index0 = self.memory[index_name]
 
-            value = self.visit(ctx.expr())
-            list_values[index] = value
+            if len(ctx.listid().list_index()) is 2:
+                list_index1 = ctx.listid().list_index()[1]
+
+                try:
+                    index1 = int(list_index1.INT().getText())
+                except Exception:
+                    index_name = list_index1.ID().getText()
+                    index1 = self.memory[index_name]
+                list_values[index0][index1] = value
+                self.memory[name] = list_values
+                return value
+
+            list_values[index0] = value
             self.memory[name] = list_values
             return value
         except Exception:
@@ -72,7 +85,7 @@ class CustomVisitor(SeawolfGrammarVisitor):
             else:
                 return left / right
         except ZeroDivisionError:
-            return "Division by Zero Error"
+                return "Division by Zero Error"
         except Exception:
             print("SEMANTIC ERROR")
             exit(-1)
@@ -234,8 +247,8 @@ class CustomVisitor(SeawolfGrammarVisitor):
                 self.visit(condition.cond_stat_block())
                 break
 
-        if block_evaluated is int(False) and \
-                        ctx.if_statement().cond_stat_block() is not None:
+        if block_evaluated is int(False) and ctx.if_statement().cond_stat_block() is not None:
+
             self.visit(ctx.if_statement().cond_stat_block())
 
         return None
@@ -250,3 +263,6 @@ class CustomVisitor(SeawolfGrammarVisitor):
             guard = self.visit(condition_block.expr())
 
         return None
+
+
+
