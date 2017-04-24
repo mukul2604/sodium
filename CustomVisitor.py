@@ -48,8 +48,8 @@ class CustomVisitor(SeawolfGrammarVisitor):
 
     def visitPrintExpr(self, ctx):
         value = self.visit(ctx.expr())
-        print(value)
-        # sys.stdout.write(str(value))
+        # print(value)
+        sys.stdout.write(str(value))
         return 0
 
     def visitReal(self, ctx):
